@@ -10,7 +10,7 @@ function call(number: string) {
 
 export default function EmergencyScreen() {
   return (
-    <Screen style={{ backgroundColor: '#D0EDFF' }}>
+    <Screen style={{ backgroundColor: '#F2F4F7' }}>
       <View style={styles.container}>
         <Pressable
           onPress={() => call('190')} // pode trocar por contato do familiar
@@ -45,7 +45,7 @@ export default function EmergencyScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D0EDFF', // 👈 fundo ajustado
+    backgroundColor: '#F2F4F7', // 👈 fundo ajustado
     padding: 24,
     alignItems: 'center',
     justifyContent: 'center',

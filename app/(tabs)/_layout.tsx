@@ -34,7 +34,7 @@ export default function TabLayout() {
           tabBarHideOnKeyboard: true,
 
           // 👇 topo da cena sempre azul claro
-          sceneContainerStyle: { backgroundColor: '#D0EDFF' },
+          sceneContainerStyle: { backgroundColor: '#F2F4F7' },
 
           // 👇 barra inferior continua branca
           tabBarStyle: {

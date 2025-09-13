@@ -52,7 +52,7 @@ export default function TabTodo() {
   }
 
   return (
-    <Screen style={{ backgroundColor: '#D0EDFF' }}>
+    <Screen style={{ backgroundColor: '#F2F4F7' }}>
       <View style={styles.container}>
         <Text style={styles.title}>Minhas Tarefas</Text>
 
@@ -110,7 +110,7 @@ export default function TabTodo() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#D0EDFF', padding: 24 },
+  container: { flex: 1, backgroundColor: '#F2F4F7', padding: 24 },
   title: {
     fontSize: 32,
     fontWeight: '800',

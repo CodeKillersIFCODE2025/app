@@ -15,7 +15,7 @@ export default function AppsScreen() {
   const insets = useSafeAreaInsets();
 
   return (
-    <Screen style={{ backgroundColor: '#D0EDFF' }}>
+    <Screen style={{ backgroundColor: '#F2F4F7' }}>
       <View style={[styles.container, { paddingBottom: insets.bottom + 16 }]}>
         <Text style={styles.title}>Apps Importantes</Text>
 
@@ -100,7 +100,7 @@ function Shortcut({
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#D0EDFF', padding: 24 },
+  container: { flex: 1, backgroundColor: '#F2F4F7', padding: 24 },
   title: { fontSize: 32, fontWeight: '800', color: '#000', textAlign: 'center', marginBottom: 16 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 12 },
   card: {

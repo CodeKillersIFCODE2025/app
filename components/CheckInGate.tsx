@@ -112,7 +112,7 @@ export default function CheckInGate() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D0EDFF', // mesmo fundo do app
+    backgroundColor: '#F2F4F7', // mesmo fundo do app
     padding: 24,
     justifyContent: 'center',
     alignItems: 'center',

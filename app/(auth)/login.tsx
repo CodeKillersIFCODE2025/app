@@ -2,14 +2,14 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import {
-    Image,
-    Keyboard,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableWithoutFeedback,
-    View,
+  Image,
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 
 export default function Login() {
@@ -32,9 +32,11 @@ export default function Login() {
   }
 
   return (
-    // ✅ envolve tudo num TouchableWithoutFeedback
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
+        {/* Marca do app */}
+        <Text style={styles.brand}>ZELO</Text>
+
         <Image
           source={require("../../assets/images/logo.png")}
           style={styles.logo}
@@ -61,7 +63,7 @@ export default function Login() {
           onChangeText={setPass}
           textContentType="oneTimeCode"
           autoComplete="off"
-          autoCorrect={false}    
+          autoCorrect={false}
         />
 
         {err ? <Text style={styles.error}>{err}</Text> : null}
@@ -69,7 +71,7 @@ export default function Login() {
         <Pressable
           style={({ pressed }) => [
             styles.button,
-            { opacity: pressed ? 0.8 : 1 },
+            { opacity: pressed ? 0.85 : 1 },
           ]}
           onPress={handleLogin}
         >
@@ -88,18 +90,25 @@ const styles = StyleSheet.create({
     padding: 32,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#D0EDFF",
+    backgroundColor: "#F2F4F7", // 👈 cinzinha neutro
+  },
+  brand: {
+    fontSize: 40,
+    fontWeight: "900",
+    letterSpacing: 2,
+    color: "#2c3e50",
+    marginBottom: 8,
   },
   logo: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    marginBottom: 40,
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    marginBottom: 28,
   },
   title: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: "700",
-    marginBottom: 32,
+    marginBottom: 24,
     textAlign: "center",
     color: "#2c3e50",
   },
@@ -108,7 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 16,
     paddingHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 16,
     backgroundColor: "#fff",
     color: "#000",
     fontSize: 20,
@@ -124,11 +133,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   button: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#0097b2", // 👈 nova cor do botão
     paddingVertical: 18,
     paddingHorizontal: 40,
     borderRadius: 999,
-    marginTop: 16,
+    marginTop: 8,
     width: "100%",
     alignItems: "center",
     shadowColor: "#000",
