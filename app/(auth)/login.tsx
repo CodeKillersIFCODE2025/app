@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { config } from "../../config"; // 👈 importa a flag
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -23,6 +24,24 @@ export default function Login() {
     setErr(null);
     try {
       if (!email || !pass) throw new Error("Preencha e-mail e senha");
+
+      if (config.use_endpoint) {
+        // monta basic auth
+        const token = btoa(`${email}:${pass}`);
+
+        const res = await fetch("http://172.16.8.122:8080/users", {
+          method: "GET",
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
+        });
+
+        if (res.status !== 200) {
+          throw new Error("Usuário ou senha inválidos");
+        }
+      }
+
+      // segue fluxo
       router.replace("/(tabs)");
     } catch (e: any) {
       setErr(e.message);
@@ -34,7 +53,6 @@ export default function Login() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        {/* Marca do app */}
         <Text style={styles.brand}>ZELO</Text>
 
         <Image
@@ -90,7 +108,7 @@ const styles = StyleSheet.create({
     padding: 32,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F2F4F7", // 👈 cinzinha neutro
+    backgroundColor: "#F2F4F7",
   },
   brand: {
     fontSize: 40,
@@ -133,7 +151,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   button: {
-    backgroundColor: "#0097b2", // 👈 nova cor do botão
+    backgroundColor: "#0097b2",
     paddingVertical: 18,
     paddingHorizontal: 40,
     borderRadius: 999,

@@ -1,7 +1,15 @@
 // components/CheckInGate.tsx
-import * as Location from 'expo-location';
-import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import * as Location from "expo-location";
+import { router } from "expo-router";
+import { useEffect, useMemo, useState } from "react";
+import {
+  ActivityIndicator,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 type Weather = {
   temp: number | null;
@@ -11,25 +19,32 @@ type Weather = {
 };
 
 export default function CheckInGate() {
-  const [visible, setVisible] = useState(true);         // visível ao abrir app
+  const [visible, setVisible] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [permission, setPermission] = useState<'granted'|'denied'|'undetermined'>('undetermined');
-  const [weather, setWeather] = useState<Weather>({ temp: null, wind: null, code: null, nextHours: [] });
+  const [permission, setPermission] = useState<
+    "granted" | "denied" | "undetermined"
+  >("undetermined");
+  const [weather, setWeather] = useState<Weather>({
+    temp: null,
+    wind: null,
+    code: null,
+    nextHours: [],
+  });
 
   const greeting = useMemo(() => {
     const h = new Date().getHours();
-    if (h < 12) return 'Bom dia';
-    if (h < 18) return 'Boa tarde';
-    return 'Boa noite';
+    if (h < 12) return "Bom dia";
+    if (h < 18) return "Boa tarde";
+    return "Boa noite";
   }, []);
 
   useEffect(() => {
     (async () => {
       try {
         const { status } = await Location.requestForegroundPermissionsAsync();
-        setPermission(status === 'granted' ? 'granted' : 'denied');
+        setPermission(status === "granted" ? "granted" : "denied");
 
-        if (status !== 'granted') {
+        if (status !== "granted") {
           setLoading(false);
           return;
         }
@@ -47,9 +62,13 @@ export default function CheckInGate() {
         const next6 = (hourly.temperature_2m || []).slice(idxNow, idxNow + 6);
 
         setWeather({
-          temp: typeof current.temperature === 'number' ? current.temperature : null,
-          wind: typeof current.windspeed === 'number' ? current.windspeed : null,
-          code: typeof current.weathercode === 'number' ? current.weathercode : null,
+          temp:
+            typeof current.temperature === "number"
+              ? current.temperature
+              : null,
+          wind: typeof current.windspeed === "number" ? current.windspeed : null,
+          code:
+            typeof current.weathercode === "number" ? current.weathercode : null,
           nextHours: next6,
         });
       } catch (e) {
@@ -66,43 +85,79 @@ export default function CheckInGate() {
     <Modal visible animationType="slide" presentationStyle="fullScreen">
       <View style={styles.container}>
         <Text style={styles.greeting}>{greeting} 👋</Text>
-        <Text style={styles.subtitle}>Antes de continuar, confirme que está tudo bem.</Text>
+        <Text style={styles.subtitle}>
+          Antes de continuar, confirme que está tudo bem.
+        </Text>
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Clima agora</Text>
 
           {loading ? (
-            <ActivityIndicator size="large" color="#007BFF" style={{ marginVertical: 12 }} />
-          ) : permission !== 'granted' ? (
-            <Text style={styles.cardText}>Permita localização para mostrar o clima da sua região.</Text>
+            <ActivityIndicator
+              size="large"
+              color="#0097b2"
+              style={{ marginVertical: 12 }}
+            />
+          ) : permission !== "granted" ? (
+            <Text style={styles.cardText}>
+              Permita localização para mostrar o clima da sua região.
+            </Text>
           ) : weather.temp == null ? (
-            <Text style={styles.cardText}>Não foi possível carregar o clima.</Text>
+            <Text style={styles.cardText}>
+              Não foi possível carregar o clima.
+            </Text>
           ) : (
             <>
               <Text style={styles.bigTemp}>{Math.round(weather.temp)}°C</Text>
               {weather.nextHours?.length ? (
                 <Text style={styles.cardText}>
-                  Próximas horas: {weather.nextHours.map((t, i) => `${Math.round(t)}°`).join(' · ')}
+                  Próximas horas:{" "}
+                  {weather.nextHours
+                    .map((t, i) => `${Math.round(t)}°`)
+                    .join(" · ")}
                 </Text>
               ) : null}
-              {typeof weather.wind === 'number' ? (
-                <Text style={styles.cardText}>Vento: {Math.round(weather.wind)} km/h</Text>
+              {typeof weather.wind === "number" ? (
+                <Text style={styles.cardText}>
+                  Vento: {Math.round(weather.wind)} km/h
+                </Text>
               ) : null}
             </>
           )}
         </View>
 
+        {/* Botão Estou bem */}
         <Pressable
           onPress={() => setVisible(false)}
-          style={({ pressed }) => [styles.okButton, { opacity: pressed ? 0.9 : 1 }]}
+          style={({ pressed }) => [
+            styles.okButton,
+            { opacity: pressed ? 0.9 : 1 },
+          ]}
           accessibilityRole="button"
           accessibilityLabel="Estou bem"
         >
           <Text style={styles.okText}>Estou bem!</Text>
         </Pressable>
 
+        {/* Botão Não estou bem */}
+        <Pressable
+          onPress={() => {
+            setVisible(false);
+            router.replace("/(tabs)/emergency");
+          }}
+          style={({ pressed }) => [
+            styles.notOkButton,
+            { opacity: pressed ? 0.9 : 1 },
+          ]}
+          accessibilityRole="button"
+          accessibilityLabel="Não estou bem"
+        >
+          <Text style={styles.notOkText}>Não estou bem</Text>
+        </Pressable>
+
         <Text style={styles.note}>
-          Este passo ajuda familiares a saber que você está seguro. Você pode voltar a qualquer momento pelas abas.
+          Este passo ajuda familiares a saber que você está seguro. Você pode
+          voltar a qualquer momento pelas abas.
         </Text>
       </View>
     </Modal>
@@ -112,37 +167,58 @@ export default function CheckInGate() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F4F7', // mesmo fundo do app
+    backgroundColor: "#F2F4F7",
     padding: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  greeting: { fontSize: 34, fontWeight: '900', color: '#0B3D5C', textAlign: 'center', marginBottom: 8 },
-  subtitle: { fontSize: 18, color: '#1b4a6b', textAlign: 'center', marginBottom: 20 },
+  greeting: {
+    fontSize: 34,
+    fontWeight: "900",
+    color: "#0B3D5C",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "#1b4a6b",
+    textAlign: "center",
+    marginBottom: 20,
+  },
   card: {
-    width: '100%',
-    backgroundColor: '#fff',
+    width: "100%",
+    backgroundColor: "#fff",
     borderRadius: 16,
     padding: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.08,
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 8,
     elevation: 3,
     marginBottom: 20,
   },
-  cardTitle: { fontSize: 20, fontWeight: '800', color: '#000', marginBottom: 8 },
-  bigTemp: { fontSize: 48, fontWeight: '900', color: '#000', marginBottom: 6 },
-  cardText: { fontSize: 18, color: '#000' },
+  cardTitle: { fontSize: 20, fontWeight: "800", color: "#000", marginBottom: 8 },
+  bigTemp: { fontSize: 48, fontWeight: "900", color: "#000", marginBottom: 6 },
+  cardText: { fontSize: 18, color: "#000" },
   okButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: "#0097b2",
     borderRadius: 999,
     paddingVertical: 18,
     paddingHorizontal: 36,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     marginTop: 8,
   },
-  okText: { color: '#fff', fontSize: 22, fontWeight: '800' },
-  note: { marginTop: 12, fontSize: 14, color: '#1b4a6b', textAlign: 'center' },
+  okText: { color: "#fff", fontSize: 22, fontWeight: "800" },
+  notOkButton: {
+    backgroundColor: "#D32F2F",
+    borderRadius: 999,
+    paddingVertical: 18,
+    paddingHorizontal: 36,
+    width: "100%",
+    alignItems: "center",
+    marginTop: 12,
+  },
+  notOkText: { color: "#fff", fontSize: 22, fontWeight: "800" },
+  note: { marginTop: 12, fontSize: 14, color: "#1b4a6b", textAlign: "center" },
 });
