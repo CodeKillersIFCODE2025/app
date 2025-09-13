@@ -1,5 +1,6 @@
 // app/(tabs)/index.tsx
 import Screen from '@/components/Screen';
+import { FontAwesome } from '@expo/vector-icons';
 import * as Speech from 'expo-speech';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -82,9 +83,7 @@ export default function TabTodo() {
     try {
       const res = await fetch(`${config.base_url}/elderly/tasks/${id}`, {
         method: 'PUT',
-        headers: {
-          Authorization: `Basic ${basic}`,
-        },
+        headers: { Authorization: `Basic ${basic}` },
       });
 
       if (!res.ok) throw new Error(`Falha ao completar (${res.status})`);
@@ -117,32 +116,51 @@ export default function TabTodo() {
               style={[styles.item, item.done && styles.itemDone]}
               accessible
               accessibilityLabel={`${item.description}. ${item.date}`}
-              accessibilityHint="Toque no título para marcar como feito. Use o botão de alto-falante para ouvir a tarefa."
+              accessibilityHint="Toque no check quadrado para marcar como feito. Use o botão de alto-falante à direita para ouvir a tarefa."
             >
-              <View style={styles.itemRow}>
+              {/* Área esquerda: check + texto */}
+              <View style={styles.left}>
+                {/* Check quadrado */}
                 <Pressable
                   onPress={() => completeTask(item.id)}
-                  style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1, flex: 1 }]}
+                  hitSlop={12}
+                  style={({ pressed }) => [
+                    styles.checkBox,
+                    item.done && styles.checkBoxDone,
+                    { opacity: pressed ? 0.7 : 1 },
+                  ]}
+                  accessibilityRole="button"
+                  accessibilityLabel={item.done ? 'Desmarcar tarefa' : 'Marcar tarefa como concluída'}
+                >
+                  {item.done && <Text style={styles.checkMark}>✓</Text>}
+                </Pressable>
+
+                {/* Texto */}
+                <Pressable
+                  onPress={() => completeTask(item.id)}
+                  style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1, flex: 1 }]}
                   accessibilityRole="button"
                   accessibilityLabel={`${item.description}. ${item.date}`}
                   accessibilityHint="Toque para marcar como feito e sincronizar"
                 >
                   <Text style={[styles.itemText, item.done && styles.itemTextDone]}>
-                    {item.done ? '✓ ' : '○ '} {item.description}
+                    {item.description}
                   </Text>
                   <Text style={styles.itemSub}>{item.date}</Text>
                 </Pressable>
-                <Pressable
-                  onPress={(e) => { /* @ts-ignore */ e?.stopPropagation?.(); speak(`${item.description}. ${item.date}`); }}
-                  onLongPress={() => Speech.stop()}
-                  style={({ pressed }) => [styles.speakBtn, { opacity: pressed ? 0.85 : 1 }]}
-                  accessibilityRole="button"
-                  accessibilityLabel={`Ouvir: ${item.description}. ${item.date}`}
-                  accessibilityHint="Toque para ouvir. Toque e segure para parar."
-                >
-                  <Text style={styles.speakIcon}>🔊</Text>
-                </Pressable>
               </View>
+
+              {/* Área direita: botão ouvir ocupa 1/4 */}
+              <Pressable
+                onPress={(e) => { /* @ts-ignore */ e?.stopPropagation?.(); speak(`${item.description}. ${item.date}`); }}
+                onLongPress={() => Speech.stop()}
+                style={({ pressed }) => [styles.speakArea, { opacity: pressed ? 0.85 : 1 }]}
+                accessibilityRole="button"
+                accessibilityLabel={`Ouvir: ${item.description}. ${item.date}`}
+                accessibilityHint="Toque para ouvir. Toque e segure para parar."
+              >
+                <FontAwesome name="volume-up" size={42} color="#fff" />
+              </Pressable>
             </View>
           )}
         />
@@ -153,17 +171,56 @@ export default function TabTodo() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F2F4F7', padding: 24 },
-  title: { fontSize: 32, fontWeight: '800', color: '#000', marginBottom: 16, textAlign: 'center' },
+  title: { fontSize: 34, fontWeight: '900', color: '#000', marginBottom: 18, textAlign: 'center' },
 
-  item: { backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 12 },
+  item: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    marginBottom: 16,
+    minHeight: 100,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 6,
+    elevation: 3,
+  },
   itemDone: { backgroundColor: '#e5ffe7' },
-  itemRow: { flexDirection: 'row', alignItems: 'center' },
+
+  left: { flex: 3, flexDirection: 'row', alignItems: 'center', padding: 16, gap: 12 },
+
+  // CHECK quadrado
+  checkBox: {
+    width: 36,
+    height: 36,
+    borderWidth: 3,
+    borderColor: '#0097b2',
+    borderRadius: 6, // bordas levemente arredondadas mas quadrado
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkBoxDone: {
+    backgroundColor: '#0097b2',
+  },
+  checkMark: {
+    fontSize: 22,
+    color: '#fff',
+    fontWeight: '900',
+  },
+
   itemText: { fontSize: 22, color: '#000', fontWeight: '700' },
-  itemSub: { marginTop: 4, fontSize: 16, color: '#444' },
+  itemSub: { marginTop: 6, fontSize: 16, color: '#444' },
   itemTextDone: { textDecorationLine: 'line-through', color: '#2e7d32' },
 
-  speakBtn: { marginLeft: 12, paddingVertical: 8, paddingHorizontal: 12, backgroundColor: '#0097b2', borderRadius: 999 },
-  speakIcon: { color: '#fff', fontSize: 18, fontWeight: '700' },
+  // BOTÃO DE OUVIR ocupa 1/4
+  speakArea: {
+    flex: 1,
+    backgroundColor: '#0097b2',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  speakIcon: { color: '#fff', fontSize: 60, fontWeight: '1200' },
 
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   emptyText: { fontSize: 18, color: '#444' },
