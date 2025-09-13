@@ -8,7 +8,6 @@ export default function AuthLayout() {
         name="login"
         options={{
           headerShown: false,
-          // opcional: impede gesto de “voltar”
           gestureEnabled: false,
         }}
       />

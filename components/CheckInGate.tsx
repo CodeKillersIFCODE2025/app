@@ -15,7 +15,7 @@ type Weather = {
   temp: number | null;
   wind: number | null;
   code: number | null;
-  nextHours: number[]; // próximas 6h temp
+  nextHours: number[];
 };
 
 export default function CheckInGate() {
@@ -72,7 +72,6 @@ export default function CheckInGate() {
           nextHours: next6,
         });
       } catch (e) {
-        // se falhar, mantém sem dados
       } finally {
         setLoading(false);
       }
@@ -126,7 +125,6 @@ export default function CheckInGate() {
           )}
         </View>
 
-        {/* Botão Estou bem */}
         <Pressable
           onPress={() => setVisible(false)}
           style={({ pressed }) => [
@@ -139,7 +137,6 @@ export default function CheckInGate() {
           <Text style={styles.okText}>Estou bem!</Text>
         </Pressable>
 
-        {/* Botão Não estou bem */}
         <Pressable
           onPress={() => {
             setVisible(false);

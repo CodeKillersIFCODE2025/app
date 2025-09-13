@@ -13,7 +13,7 @@ export default function EmergencyScreen() {
     <Screen style={{ backgroundColor: '#F2F4F7' }}>
       <View style={styles.container}>
         <Pressable
-          onPress={() => call('190')} // pode trocar por contato do familiar
+          onPress={() => call('190')}
           style={({ pressed }) => [styles.sos, { opacity: pressed ? 0.9 : 1 }]}
           accessibilityRole="button"
           accessibilityLabel="Botão de emergência"
@@ -45,7 +45,7 @@ export default function EmergencyScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F4F7', // 👈 fundo ajustado
+    backgroundColor: '#F2F4F7',
     padding: 24,
     alignItems: 'center',
     justifyContent: 'center',

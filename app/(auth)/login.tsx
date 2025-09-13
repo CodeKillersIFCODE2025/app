@@ -11,7 +11,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { config } from "../../config"; // 👈 importa a flag
+import { config } from "../../config";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -26,7 +26,6 @@ export default function Login() {
       if (!email || !pass) throw new Error("Preencha e-mail e senha");
 
       if (config.use_endpoint) {
-        // monta basic auth
         const token = btoa(`${email}:${pass}`);
 
         const res = await fetch("http://172.16.8.122:8080/users", {
@@ -41,7 +40,6 @@ export default function Login() {
         }
       }
 
-      // segue fluxo
       router.replace("/(tabs)");
     } catch (e: any) {
       setErr(e.message);

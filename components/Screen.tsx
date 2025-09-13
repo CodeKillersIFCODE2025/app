@@ -12,7 +12,6 @@ export default function Screen({
   return (
     <SafeAreaView
       edges={['top', 'left', 'right']}
-      // ❗️sem background fixo; deixa herdar da cena (Tabs)
       style={[{ flex: 1 }, style]}
     >
       {children}

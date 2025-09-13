@@ -23,7 +23,6 @@ export default function TabLayout() {
 
   return (
     <>
-      {/* ✅ Check-in obrigatório ao abrir */}
       <CheckInGate />
 
       <Tabs
@@ -33,10 +32,8 @@ export default function TabLayout() {
           tabBarInactiveTintColor: '#555',
           tabBarHideOnKeyboard: true,
 
-          // 👇 topo da cena sempre azul claro
           sceneContainerStyle: { backgroundColor: '#F2F4F7' },
 
-          // 👇 barra inferior continua branca
           tabBarStyle: {
             backgroundColor: '#fff',
             borderTopWidth: 0,

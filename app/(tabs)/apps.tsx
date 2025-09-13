@@ -30,35 +30,35 @@ export default function AppsScreen() {
           <Shortcut
             label="Telefone"
             icon={{ uri: 'https://cdn-icons-png.flaticon.com/512/724/724664.png' }}
-            color="#007AFF" // azul iOS
+            color="#007AFF"
             textColor="#fff"
             onPress={() => tryOpen(['tel:'])}
           />
           <Shortcut
             label="Mapas"
             icon={{ uri: 'https://cdn-icons-png.flaticon.com/512/854/854878.png' }}
-            color="#FF9800" // laranja vibrante
+            color="#FF9800"
             textColor="#fff"
             onPress={() => tryOpen(['geo:0,0?q=', 'http://maps.google.com/maps'])}
           />
           <Shortcut
             label="YouTube"
             icon={{ uri: 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png' }}
-            color="#FF0000" // vermelho vivo
+            color="#FF0000"
             textColor="#fff"
             onPress={() => tryOpen(['vnd.youtube://', 'https://youtube.com'])}
           />
           <Shortcut
             label="Calendário"
             icon={{ uri: 'https://cdn-icons-png.flaticon.com/512/747/747310.png' }}
-            color="#673AB7" // roxo vivo
+            color="#673AB7"
             textColor="#fff"
             onPress={() => Alert.alert('Atalho', 'Podemos ligar no calendário do sistema.')}
           />
           <Shortcut
             label="Contatos"
             icon={{ uri: 'https://cdn-icons-png.flaticon.com/512/456/456212.png' }}
-            color="#009688" // teal vivo
+            color="#009688"
             textColor="#fff"
             onPress={() => Alert.alert('Atalho', 'Podemos abrir contatos do sistema.')}
           />
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#fff', // fundo claro p/ ícone PB
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
