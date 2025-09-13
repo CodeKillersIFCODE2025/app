@@ -84,6 +84,7 @@ export default function CheckInGate() {
     <Modal visible animationType="slide" presentationStyle="fullScreen">
       <View style={styles.container}>
         <Text style={styles.greeting}>{greeting} 👋</Text>
+        <Text style={styles.greeting2}>Como você está se sentindo hoje?</Text>
         <Text style={styles.subtitle}>
           Antes de continuar, confirme que está tudo bem.
         </Text>
@@ -170,6 +171,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   greeting: {
+    fontSize: 22,
+    fontWeight: "900",
+    color: "#0B3D5C",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  greeting2: {
     fontSize: 34,
     fontWeight: "900",
     color: "#0B3D5C",
